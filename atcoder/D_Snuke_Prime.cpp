@@ -23,53 +23,81 @@ using namespace std;
 
 typedef long long int ll;
 typedef pair<ll, ll> pll;
-typedef pair<string, string> pss;
+typedef pair<char, char> pcc;
 typedef vector<pll> vll;
 typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef priority_queue<ll> PQMAX;
 typedef priority_queue<ll, vector<ll>,
-					   greater<ll>>
-	PQMIN;
+                       greater<ll>>
+    PQMIN;
 typedef set<ll> setll;
 typedef map<ll, ll> mapll;
 
 ll power(ll x, ll y, ll p)
 {
-	ll res = 1;
+    ll res = 1;
 
-	x = x % p;
+    x = x % p;
 
-	if (x == 0)
-		return 0;
+    if (x == 0)
+        return 0;
 
-	while (y > 0)
-	{
-		if (y & 1)
-			res = (res * x) % p;
+    while (y > 0)
+    {
+        if (y & 1)
+            res = (res * x) % p;
 
-		y = y >> 1;
-		x = (x * x) % p;
-	}
-	return res;
+        y = y >> 1;
+        x = (x * x) % p;
+    }
+    return res;
 }
 
 void solve()
 {
+    ll n, c;
+    cin >> n >> c;
+    mapll m;
+    FOR(i, n)
+    {
+        ll ai, bi, ci;
+        cin >> ai >> bi >> ci;
+        m[ai] += ci;
+        m[bi + 1] -= ci;
+    }
+    ll prev = 0;
+    FOREACH(e, m)
+    {
+        e.second += prev;
+        prev = e.second;
+    }
+    ll res = 0;
+    mapll::iterator it = m.begin();
+    prev = it->first;
+    ll prev2 = it->second;
+    while (it != m.end())
+    {
+        it++;
+        res += (it->first - prev) * min(c, prev2);
+        prev = it->first;
+        prev2 = it->second;
+    }
+    cout << res << endl;
 }
 
 int main()
 {
-	ios_base::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
 
-	cin.tie(NULL);
-	cout.tie(NULL);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	ll t = 1;
-	// cin >> t;
-	while (t--)
-	{
-		solve();
-	}
-	return 0;
+    ll t = 1;
+    // cin >> t;
+    while (t--)
+    {
+        solve();
+    }
+    return 0;
 }
