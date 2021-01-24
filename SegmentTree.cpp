@@ -30,43 +30,51 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef priority_queue<ll> PQMAX;
 typedef priority_queue<ll, vector<ll>,
-					   greater<ll>>
-	PQMIN;
+                       greater<ll>>
+    PQMIN;
 typedef set<ll> setll;
 typedef map<ll, ll> mapll;
 
 ll power(ll x, ll y, ll p)
 {
-	ll res = 1;
-	x = x % p;
-	if (x == 0)
-		return 0;
-	while (y > 0)
-	{
-		if (y & 1)
-			res = (res * x) % p;
-		y = y >> 1;
-		x = (x * x) % p;
-	}
-	return res;
+    ll res = 1;
+    x = x % p;
+    if (x == 0)
+        return 0;
+    while (y > 0)
+    {
+        if (y & 1)
+            res = (res * x) % p;
+        y = y >> 1;
+        x = (x * x) % p;
+    }
+    return res;
+}
+
+void buildST()
+{
 }
 
 void yash56244()
 {
+    ll arr[] = {2, 3, 6, 0, 10, 5};
+    ll n = sizeof(arr) / sizeof(arr[0]);
+    ll st[4 * n];
+    buildST();
 }
 
 int main()
 {
-	ios_base::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
 
-	cin.tie(NULL);
-	cout.tie(NULL);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	ll t = 1;
-	cin >> t;
-	while (t--)
-	{
-		yash56244();
-	}
-	return 0;
+    ll t = 1;
+    // cin >> t;
+    while (t--)
+    {
+        yash56244();
+    }
+    return 0;
 }

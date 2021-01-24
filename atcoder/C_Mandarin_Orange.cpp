@@ -53,6 +53,31 @@ ll power(ll x, ll y, ll p)
 
 void yash56244()
 {
+	ll n;
+	cin >> n;
+	ll arr[n];
+	FOR(i, n)
+	{
+		cin >> arr[i];
+	}
+	ll ans = INT_MIN;
+	FOR(i, n)
+	{
+		ll res = arr[i];
+		FORL(j, i + 1, n - 1)
+		{
+			if (arr[j] >= arr[i])
+			{
+				res += arr[i];
+			}
+			else
+			{
+				break;
+			}
+		}
+		ans = max(ans, res);
+	}
+	cout << ans << endl;
 }
 
 int main()
@@ -63,7 +88,7 @@ int main()
 	cout.tie(NULL);
 
 	ll t = 1;
-	cin >> t;
+	// cin >> t;
 	while (t--)
 	{
 		yash56244();
