@@ -55,6 +55,35 @@ ll power(ll x, ll y, ll p)
 
 void yash56244()
 {
+	ll n;
+	cin >> n;
+	string s;
+	cin >> s;
+	vl z, o;
+	z.clear();
+	o.clear();
+	ll zcnt = 0, ocnt = 0, res = 0;
+	FOR(i, n)
+	{
+		if (s[i] == '0')
+		{
+			zcnt++;
+		}
+		if (s[n - i - 1] == '1')
+		{
+			ocnt++;
+		}
+		z.push_back(zcnt);
+		o.push_back(ocnt);
+	}
+	FOR(i, n)
+	{
+		if (z.at(i) + o.at(n - i - 1) > res)
+		{
+			res = z.at(i) + o.at(n - i - 1);
+		}
+	}
+	cout << n - res << endl;
 }
 
 int main()

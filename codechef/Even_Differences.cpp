@@ -32,43 +32,67 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef priority_queue<ll> PQMAX;
 typedef priority_queue<ll, vector<ll>,
-					   greater<ll>>
-	PQMIN;
+                       greater<ll>>
+    PQMIN;
 typedef set<ll> setll;
 typedef map<ll, ll> mapll;
 
 ll power(ll x, ll y, ll p)
 {
-	ll res = 1;
-	x = x % p;
-	if (x == 0)
-		return 0;
-	while (y > 0)
-	{
-		if (y & 1)
-			res = (res * x) % p;
-		y = y >> 1;
-		x = (x * x) % p;
-	}
-	return res;
+    ll res = 1;
+    x = x % p;
+    if (x == 0)
+        return 0;
+    while (y > 0)
+    {
+        if (y & 1)
+            res = (res * x) % p;
+        y = y >> 1;
+        x = (x * x) % p;
+    }
+    return res;
 }
 
 void yash56244()
 {
+    ll n;
+    cin >> n;
+    ll arr[n];
+    ll odd = 0, even = 0;
+    FOR(i, n)
+    {
+        cin >> arr[i];
+        if (arr[i] % 2)
+        {
+            odd++;
+        }
+        else
+        {
+            even++;
+        }
+    }
+    if (odd == n or even == n)
+    {
+        cout << 0 << endl;
+    }
+    else
+    {
+        cout << min(odd, even) << endl;
+    }
 }
 
 int main()
 {
-	ios_base::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
 
-	cin.tie(NULL);
-	cout.tie(NULL);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	ll t = 1;
-	cin >> t;
-	while (t--)
-	{
-		yash56244();
-	}
-	return 0;
+    ll t = 1;
+    cin >> t;
+    while (t--)
+    {
+        yash56244();
+    }
+    return 0;
 }

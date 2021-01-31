@@ -55,6 +55,23 @@ ll power(ll x, ll y, ll p)
 
 void yash56244()
 {
+	ll n;
+	cin >> n;
+	ll sum = 0;
+	FOR(i, n)
+	{
+		ll ai;
+		cin >> ai;
+		sum += ai;
+	}
+	if (sum % 2 == 0)
+	{
+		cout << 1 << endl;
+	}
+	else
+	{
+		cout << 2 << endl;
+	}
 }
 
 int main()
