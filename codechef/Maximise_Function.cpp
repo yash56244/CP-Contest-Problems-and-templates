@@ -17,18 +17,18 @@ using namespace std;
 #define REVERSE(v) reverse(ALL(v))
 #define SORTA(arr, sz) sort(ALLA(arr, sz))
 #define log(args...)                             \
-	{                                            \
-		string _s = #args;                       \
-		replace(_s.begin(), _s.end(), ',', ' '); \
-		stringstream _ss(_s);                    \
-		istream_iterator<string> _it(_ss);       \
-		err(_it, args);                          \
-	}
+    {                                            \
+        string _s = #args;                       \
+        replace(_s.begin(), _s.end(), ',', ' '); \
+        stringstream _ss(_s);                    \
+        istream_iterator<string> _it(_ss);       \
+        err(_it, args);                          \
+    }
 
 #define logarr(arr, a, b)            \
-	for (int z = (a); z <= (b); z++) \
-		cout << (arr[z]) << " ";     \
-	cout << endl;
+    for (int z = (a); z <= (b); z++) \
+        cout << (arr[z]) << " ";     \
+    cout << endl;
 
 void err(istream_iterator<string> it)
 {
@@ -38,8 +38,8 @@ template <typename T, typename... Args>
 
 void err(istream_iterator<string> it, T a, Args... args)
 {
-	cout << *it << " = " << a << endl;
-	err(++it, args...);
+    cout << *it << " = " << a << endl;
+    err(++it, args...);
 }
 
 typedef long long int ll;
@@ -51,8 +51,8 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef priority_queue<ll> PQMAX;
 typedef priority_queue<ll, vector<ll>,
-					   greater<ll>>
-	PQMIN;
+                       greater<ll>>
+    PQMIN;
 typedef set<ll> setll;
 typedef map<ll, ll> mapll;
 
@@ -60,36 +60,47 @@ const ll inf = 1e15;
 
 ll power(ll x, ll y, ll p)
 {
-	ll res = 1;
-	x = x % p;
-	if (x == 0)
-		return 0;
-	while (y > 0)
-	{
-		if (y & 1)
-			res = (res * x) % p;
-		y = y >> 1;
-		x = (x * x) % p;
-	}
-	return res;
+    ll res = 1;
+    x = x % p;
+    if (x == 0)
+        return 0;
+    while (y > 0)
+    {
+        if (y & 1)
+            res = (res * x) % p;
+        y = y >> 1;
+        x = (x * x) % p;
+    }
+    return res;
 }
 
 void yash56244()
 {
+    ll n;
+    cin >> n;
+    ll mx = -inf, mn = inf;
+    FOR(i, n)
+    {
+        ll a;
+        cin >> a;
+        mx = max(mx, a);
+        mn = min(mn, a);
+    }
+    cout << (mx - mn) * 2 << endl;
 }
 
 int main()
 {
-	ios_base::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
 
-	cin.tie(NULL);
-	cout.tie(NULL);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	ll t = 1;
-	cin >> t;
-	while (t--)
-	{
-		yash56244();
-	}
-	return 0;
+    ll t = 1;
+    cin >> t;
+    while (t--)
+    {
+        yash56244();
+    }
+    return 0;
 }
