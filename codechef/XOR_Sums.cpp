@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#define mod 1e9 + 7
+#define mod 998244353
 #define pi 3.1415926535897932384626433832795
 #define endl "\n"
 #define FOR(i, n) for (ll(i) = 0; (i) < (n); (i)++)
