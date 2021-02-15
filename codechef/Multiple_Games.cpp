@@ -73,118 +73,63 @@ ll power(ll x, ll y, ll p)
     }
     return res;
 }
-const int MXN = 2e5 + 2;
-
-vl g[MXN];
-vll queries[MXN];
-ll ans[MXN];
-ll leaf[MXN];
-unordered_map<ll, vl> level[MXN];
-
-void dfsLeaf(ll s)
-{
-    if (g[s].size() == 0)
-    {
-        leaf[s] = 1;
-    }
-    FOREACH(v, g[s])
-    {
-        dfsLeaf(v);
-        leaf[v] += leaf[s];
-    }
-}
-
-void dfsLevel(ll s, ll lvl)
-{
-    if (g[s].size() == 0 or leaf[s] == 1)
-        return;
-    ll n = g[s].size();
-    if (n == 1)
-    {
-        if (queries[g[s][0]].size() < queries[s].size())
-        {
-            swap(queries[g[s][0]], queries[s]);
-        }
-        FOREACH(q, queries[s])
-        {
-            queries[g[s][0]].push_back(q);
-        }
-        swap(level[lvl + 1], level[lvl]);
-    }
-    else
-    {
-        FOREACH(l, level[lvl])
-        {
-            if (l.first % n != 0)
-            {
-                auto v = l.second;
-                FOREACH(x, v)
-                {
-                    ans[x] += l.first;
-                }
-            }
-            else
-            {
-                level[lvl + 1][l.first / n] = l.second;
-            }
-        }
-        FOREACH(q, queries[s])
-        {
-            if (q.first % n != 0)
-            {
-                ans[q.second] += q.first;
-            }
-            else
-            {
-                level[lvl + 1][q.first / n].push_back(q.second);
-            }
-        }
-    }
-    FOREACH(v, g[s])
-    {
-        dfsLevel(v, lvl + 1);
-    }
-    if (g[s].size() == 1)
-    {
-        swap(level[lvl + 1], level[lvl]);
-    }
-    else
-    {
-        FOREACH(q, queries[s])
-        {
-            if (q.first % n == 0)
-            {
-                level[lvl + 1][q.first / n].pop_back();
-            }
-        }
-    }
-    level[lvl + 1].clear();
-}
 
 void yash56244()
 {
-    ll n;
-    cin >> n;
-    FOR(i, n - 1)
+
+    ll n, q, m;
+    cin >> n >> q >> m;
+    ll arr[n];
+    FOR(i, n)
     {
-        ll u;
-        cin >> u;
-        g[u].push_back(i + 2);
+        cin >> arr[i];
     }
-    dfsLeaf(1);
-    ll q;
-    cin >> q;
-    FOR(i, q)
+    ll b[1000001] = {};
+    map<pair<ll, ll>, ll> mp;
+    while (q--)
     {
-        ll v, w;
-        cin >> v >> w;
-        queries[v].push_back({w, i});
+        ll l, r;
+        cin >> l >> r;
+        l--;
+        r--;
+        if (arr[l] > m)
+        {
+            continue;
+        }
+        else if (arr[l] <= m and arr[r] > m)
+        {
+            b[arr[l]]++;
+            b[m + 1]--;
+        }
+        else if (arr[r] <= m)
+        {
+            b[arr[l]]++;
+            b[m + 1]--;
+            mp[{arr[l], arr[r]}]++;
+        }
     }
-    dfsLevel(1, 1);
-    FOR(i, q)
+
+    FOREACH(e, mp)
     {
-        cout << ans[i] << endl;
+        ll e11 = e.first.first, e12 = e.first.second, e2 = e.second;
+        b[e12 + e11] -= e2;
+        b[e12 + 2 * e11] += e2;
+        ll c = e12 + 2 * e11;
+        while (c + e12 <= m)
+        {
+            c += e12;
+            b[c] -= e2;
+            b[c + e11] += e2;
+            c += e11;
+        }
     }
+    ll ans = 0;
+    FORL(i, 1, m)
+    {
+        b[i] += b[i - 1];
+        ans = max(ans, b[i]);
+    }
+    cout << ans << endl;
 }
 
 int main()
@@ -195,7 +140,7 @@ int main()
     cout.tie(NULL);
 
     ll t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         yash56244();

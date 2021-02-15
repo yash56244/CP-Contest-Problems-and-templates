@@ -58,7 +58,7 @@ typedef map<ll, ll> mapll;
 
 const ll inf = 1e15;
 
-ll power(ll x, ll y, ll p)
+ll modPower(ll x, ll y, ll p)
 {
 	ll res = 1;
 	x = x % p;
@@ -73,9 +73,71 @@ ll power(ll x, ll y, ll p)
 	}
 	return res;
 }
+ll modInverse(ll a, ll p)
+{
+	return modPower(a, p - 2, p);
+}
+ll modBinomial(ll n, ll k, ll p)
+{
+	ll numerator = 1;
+	FOR(i, k)
+	{
+		numerator = (numerator * (n - i)) % p;
+	}
+	ll denominator = 1;
+	FORL(i, 1, k)
+	{
+		denominator = (denominator * i) % p;
+	}
+	return (numerator * modInverse(denominator, p)) % p;
+}
 
 void yash56244()
 {
+	ll n;
+	cin >> n;
+	ll arr[n];
+	ll xr = 0;
+	FOR(i, n)
+	{
+		cin >> arr[i];
+		xr += arr[i];
+	}
+	ll dp[n + 1];
+	dp[1] = xr;
+	FORL(i, 2, n)
+	{
+		ll dpi = 0;
+		FOR(j, 32)
+		{
+			ll cnt1 = 0, cnt0 = 0;
+			FOR(k, n)
+			{
+				if (arr[k] & (1 << j))
+					cnt1++;
+				else
+					cnt0++;
+			}
+			ll ans = 0;
+			for (ll l = 1; l <= i; l += 2)
+			{
+				if (l <= cnt1 and (i - l) <= cnt0)
+				{
+					ans += (modBinomial(cnt1, l, mod) * modBinomial(cnt0, i - l, mod)) % mod;
+				}
+			}
+			dpi += (1 << j) * ans;
+		}
+		dp[i] = dp[i - 1] + dpi;
+	}
+	ll q;
+	cin >> q;
+	while (q--)
+	{
+		ll m;
+		cin >> m;
+		cout << dp[m] << endl;
+	}
 }
 
 int main()
@@ -86,7 +148,7 @@ int main()
 	cout.tie(NULL);
 
 	ll t = 1;
-	cin >> t;
+	// cin >> t;
 	while (t--)
 	{
 		yash56244();
