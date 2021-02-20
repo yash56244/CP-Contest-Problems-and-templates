@@ -2,7 +2,6 @@
 
 using namespace std;
 
-#define mod 1e9 + 7
 #define pi 3.1415926535897932384626433832795
 #define endl "\n"
 #define FOR(i, n) for (ll(i) = 0; (i) < (n); (i)++)
@@ -16,6 +15,8 @@ using namespace std;
 #define SORT(v) sort(ALL(v))
 #define REVERSE(v) reverse(ALL(v))
 #define SORTA(arr, sz) sort(ALLA(arr, sz))
+#define yes cout << "YES" << endl
+#define no cout << "NO" << endl
 #define log(args...)                             \
 	{                                            \
 		string _s = #args;                       \
@@ -57,22 +58,7 @@ typedef set<ll> setll;
 typedef map<ll, ll> mapll;
 
 const ll inf = 1e15;
-
-ll power(ll x, ll y, ll p)
-{
-	ll res = 1;
-	x = x % p;
-	if (x == 0)
-		return 0;
-	while (y > 0)
-	{
-		if (y & 1)
-			res = (res * x) % p;
-		y = y >> 1;
-		x = (x * x) % p;
-	}
-	return res;
-}
+const ll mod = 1e9 + 7;
 
 void yash56244()
 {
