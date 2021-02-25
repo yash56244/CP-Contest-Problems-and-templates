@@ -15,6 +15,8 @@ using namespace std;
 #define SORT(v) sort(ALL(v))
 #define REVERSE(v) reverse(ALL(v))
 #define SORTA(arr, sz) sort(ALLA(arr, sz))
+#define yes cout << "YES" << endl
+#define no cout << "NO" << endl
 #define log(args...)                             \
     {                                            \
         string _s = #args;                       \
@@ -58,130 +60,57 @@ typedef map<ll, ll> mapll;
 const ll inf = 1e15;
 const ll mod = 1e9 + 7;
 
-ll power(ll x, ll y)
+bool cmp(pair<ll, ll> a, pair<ll, ll> b)
 {
-    ll res = 1;
-    x = x % mod;
-    if (x == 0)
-        return 0;
-    while (y > 0)
-    {
-        if (y & 1)
-            res = (res * x) % mod;
-        y = y >> 1;
-        x = (x * x) % mod;
-    }
-    return res;
-}
-
-ll lcm(ll a, ll b)
-{
-    return (a * b) / __gcd(a, b);
-}
-
-ll modInverse(ll n)
-{
-    return power(n, mod - 2);
-}
-
-ll nCrModPFermat(ll n, ll r)
-{
-    if (n < r)
-        return 0;
-    if (r == 0)
-        return 1;
-    ll fac[n + 1];
-    fac[0] = 1;
-    FORL(i, 1, n)
-    {
-        fac[i] = (fac[i - 1] * i) % mod;
-    }
-    return (fac[n] * modInverse(fac[r]) % mod * modInverse(fac[n - r]) % mod) % mod;
-}
-
-ll n = 1000000;
-vector<bool> is_prime(n + 1, true);
-
-void sieve()
-{
-    is_prime[0] = is_prime[1] = false;
-    FORSQ(i, 2, n)
-    {
-        if (is_prime[i])
-        {
-            for (int j = i * i; j <= n; j += i)
-                is_prime[j] = false;
-        }
-    }
-}
-
-vector<bool> segmentedSieve(ll L, ll R)
-{
-    ll lim = sqrt(R);
-    vector<bool> mark(lim + 1, false);
-    vector<ll> primes;
-    FORL(i, 2, lim)
-    {
-        if (!mark[i])
-        {
-            primes.emplace_back(i);
-            for (ll j = i * i; j <= lim; j += i)
-                mark[j] = true;
-        }
-    }
-
-    vector<bool> isPrime(R - L + 1, true);
-    FOREACH(i, primes)
-    {
-        for (ll j = max(i * i, (L + i - 1) / i * i); j <= R; j += i)
-            isPrime[j - L] = false;
-    }
-    if (L == 1)
-        isPrime[0] = false;
-    return isPrime;
-}
-
-vl phi(n + 1);
-
-void phi_1_to_n(ll n)
-{
-    phi[0] = 0;
-    phi[1] = 1;
-    FORL(i, 2, n)
-    {
-        phi[i] = i;
-    }
-
-    FORL(i, 2, n)
-    {
-        if (phi[i] == i)
-        {
-            for (ll j = i; j <= n; j += i)
-                phi[j] -= phi[j] / i;
-        }
-    }
-}
-
-ll factmod(ll n, ll p) // n! % p
-{
-    vl f(p);
-    f[0] = 1;
-    for (ll i = 1; i < p; i++)
-        f[i] = f[i - 1] * i % p;
-
-    ll res = 1;
-    while (n > 1)
-    {
-        if ((n / p) % 2)
-            res = p - res;
-        res = res * f[n % p] % p;
-        n /= p;
-    }
-    return res;
+    return a.first > b.first;
 }
 
 void yash56244()
 {
+    ll n;
+    cin >> n;
+    ll arr[n];
+    vll temp(n);
+    FOR(i, n)
+    {
+        cin >> arr[i];
+        temp.push_back({arr[i], i});
+    }
+    sort(temp.begin(), temp.end(), cmp);
+    ll i = 0, last_index = n - 1;
+    vl ans;
+    while (1)
+    {
+        if (last_index == 0)
+        {
+            ans.push_back(arr[0]);
+            break;
+        }
+        if (temp[i].second == 0)
+        {
+            for (ll j = temp[i].second; j <= last_index; j++)
+            {
+                ans.push_back(arr[j]);
+            }
+            break;
+        }
+        for (ll j = temp[i].second; j <= last_index; j++)
+        {
+            ans.push_back(arr[j]);
+        }
+        if (temp[i].second > last_index)
+        {
+            i++;
+            continue;
+        }
+        last_index = temp[i].second - 1;
+        i++;
+    }
+    FOREACH(e, ans)
+    {
+        cout << e << " ";
+    }
+    cout << endl;
 }
 
 int main()
