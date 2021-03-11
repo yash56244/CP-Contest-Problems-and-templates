@@ -2,7 +2,6 @@
 
 using namespace std;
 
-#define pi 3.1415926535897932384626433832795
 #define endl "\n"
 #define FOR(i, n) for (ll(i) = 0; (i) < (n); (i)++)
 #define FORL(i, a, n) for (ll(i) = (a); (i) <= (n); (i)++)
@@ -29,77 +28,38 @@ typedef priority_queue<ll> PQMAX;
 typedef priority_queue<ll, vector<ll>,
                        greater<ll>>
     PQMIN;
-typedef set<ll> setll;
 typedef map<ll, ll> mapll;
 
-const ll inf = 1e15;
+const ll inf = 1e18;
 const ll mod = 1e9 + 7;
-
-const int block = 300;
-ll cnt[2000001];
-
-struct Query
-{
-    ll l, r, idx;
-};
-
-bool cmp(Query a, Query b)
-{
-    if (a.l / block != b.l / block)
-    {
-        return a.l / block < b.l / block;
-    }
-    return a.r < b.r;
-}
+const ll maxn = 1e6 + 5;
 
 void yash56244()
 {
-    ll n, q;
-    cin >> n >> q;
-    ll arr[n + 1];
-    FORL(i, 1, n)
+    ll n;
+    cin >> n;
+    vl miner, mine;
+    FOR(i, 2 * n)
     {
-        cin >> arr[i];
+        ll a, b;
+        cin >> a >> b;
+        if (a == 0)
+        {
+            miner.push_back(abs(b));
+        }
+        else
+        {
+            mine.push_back(abs(a));
+        }
     }
-    Query queries[q + 1];
-    FORL(i, 1, q)
+    sort(miner.begin(), miner.end());
+    sort(mine.begin(), mine.end());
+    double ans = 0.0000000000;
+    FOR(i, n)
     {
-        cin >> queries[i].l >> queries[i].r;
-        queries[i].idx = i;
+        ans += pow(miner[i] * miner[i] + mine[i] * mine[i], 0.5);
     }
-    sort(queries + 1, queries + q + 1, cmp);
-    ll l = 0, r = 0;
-    ll answers[q + 1];
-    ll ans = 0;
-    FORL(i, 1, q)
-    {
-        ll qL = queries[i].l, qR = queries[i].r;
-        while (l > qL - 1)
-        {
-            l--;
-            //add.
-        }
-        while (r < qR)
-        {
-            r++;
-            //add.
-        }
-        while (l < qL - 1)
-        {
-            //remove.
-            l++;
-        }
-        while (r > qR)
-        {
-            //remove.
-            r--;
-        }
-        answers[queries[i].idx] = ans;
-    }
-    FORL(i, 1, q)
-    {
-        cout << answers[i] << endl;
-    }
+    cout << fixed << setprecision(15) << ans << endl;
 }
 
 int main()
@@ -110,7 +70,7 @@ int main()
     cout.tie(NULL);
 
     ll t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         yash56244();

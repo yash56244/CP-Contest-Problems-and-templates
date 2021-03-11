@@ -15,8 +15,8 @@ using namespace std;
 #define SORT(v) sort(ALL(v))
 #define REVERSE(v) reverse(ALL(v))
 #define SORTA(arr, sz) sort(ALLA(arr, sz))
-#define yes cout << "YES" << endl
-#define no cout << "NO" << endl
+#define yes cout << "Yes" << endl
+#define no cout << "No" << endl
 
 typedef long long int ll;
 typedef pair<ll, ll> pll;
@@ -27,60 +27,74 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef priority_queue<ll> PQMAX;
 typedef priority_queue<ll, vector<ll>,
-                       greater<ll>>
-    PQMIN;
+					   greater<ll>>
+	PQMIN;
 typedef set<ll> setll;
 typedef map<ll, ll> mapll;
 
 const ll inf = 1e15;
 const ll mod = 1e9 + 7;
-
-struct DSU
-{
-    vl parent;
-
-    void init(ll n) { parent = vl(n + 1, -1); }
-
-    ll get(ll x) { return (parent[x] < 0 ? x : parent[x] = get(parent[x])); } // Path Compression.
-
-    bool sameSet(ll x, ll y) { return get(x) == get(y); }
-
-    ll size(ll x) { return -parent[get(x)]; }
-
-    bool unionSets(ll x, ll y)
-    {
-        x = get(x), y = get(y);
-
-        if (x == y)
-            return 0;
-
-        if (parent[x] > parent[y]) // Union by size.
-            swap(x, y);
-
-        parent[x] += parent[y];
-
-        parent[y] = x;
-
-        return 1;
-    }
-};
-
 void yash56244()
 {
+	ll r, c, x;
+	cin >> r >> c >> x;
+	int a[r][c], b[r][c];
+	FOR(i, r)
+	{
+		FOR(j, c)
+		{
+			cin >> a[i][j];
+		}
+	}
+	FOR(i, r)
+	{
+		FOR(j, c)
+		{
+			cin >> b[i][j];
+		}
+	}
+	FOR(i, r)
+	{
+		FOR(j, c)
+		{
+			a[i][j] -= b[i][j];
+		}
+	}
+	bool possible = true;
+	FORL(i, 1, min(x, r) - 1)
+	{
+		FORL(j, 1, min(x, c) - 1)
+		{
+			if (a[i][j] - a[i][0] -
+					a[0][j] + a[0][0] !=
+				0)
+			{
+				possible = false;
+			}
+		}
+	}
+	if (possible)
+	{
+		yes;
+	}
+	else
+	{
+		no;
+	}
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
+	ios_base::sync_with_stdio(false);
 
-    cin.tie(NULL);
-    cout.tie(NULL);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-    ll t = 1;
-    cin >> t;
-    while (t--)
-    {
-        yash56244();
-    }
-    return 0;
+	ll t = 1;
+	cin >> t;
+	while (t--)
+	{
+		yash56244();
+	}
+	return 0;
 }

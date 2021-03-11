@@ -15,31 +15,6 @@ using namespace std;
 #define SORT(v) sort(ALL(v))
 #define REVERSE(v) reverse(ALL(v))
 #define SORTA(arr, sz) sort(ALLA(arr, sz))
-#define log(args...)                             \
-    {                                            \
-        string _s = #args;                       \
-        replace(_s.begin(), _s.end(), ',', ' '); \
-        stringstream _ss(_s);                    \
-        istream_iterator<string> _it(_ss);       \
-        err(_it, args);                          \
-    }
-
-#define logarr(arr, a, b)            \
-    for (int z = (a); z <= (b); z++) \
-        cout << (arr[z]) << " ";     \
-    cout << endl;
-
-void err(istream_iterator<string> it)
-{
-}
-
-template <typename T, typename... Args>
-
-void err(istream_iterator<string> it, T a, Args... args)
-{
-    cout << *it << " = " << a << endl;
-    err(++it, args...);
-}
 
 typedef long long int ll;
 typedef pair<ll, ll> pll;
@@ -101,7 +76,6 @@ ll nCrModPFermat(ll n, ll r)
 
 ll n = 1000000;
 vector<bool> is_prime(n + 1, true);
-
 void sieve()
 {
     is_prime[0] = is_prime[1] = false;
@@ -112,6 +86,23 @@ void sieve()
             for (int j = i * i; j <= n; j += i)
                 is_prime[j] = false;
         }
+    }
+}
+// The algorithm given here calculates factorizations of all numbers in the segment [2;n]
+const int N = 10000000;
+int lp[N + 1];
+vector<int> pr;
+void linearSieve()
+{
+    for (int i = 2; i <= N; ++i)
+    {
+        if (lp[i] == 0)
+        {
+            lp[i] = i;
+            pr.push_back(i);
+        }
+        for (int j = 0; j < (int)pr.size() && pr[j] <= lp[i] && i * pr[j] <= N; ++j)
+            lp[i * pr[j]] = pr[j];
     }
 }
 
@@ -142,7 +133,6 @@ vector<bool> segmentedSieve(ll L, ll R)
 }
 
 vl phi(n + 1);
-
 void phi_1_to_n(ll n)
 {
     phi[0] = 0;

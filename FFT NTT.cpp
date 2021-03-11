@@ -54,7 +54,7 @@ ll inv(ll m)
     return power(m, mod - 2);
 }
 
-template <ll mod, ll pr>
+template <ll mod, ll pr> // NTT<998244353, 3> ntt;
 class NTT
 {
 public:
@@ -105,7 +105,7 @@ public:
                 x[i] = (ll)(x[i] * invs % mod);
         }
     }
-    vector<ll> convolution(vector<ll> &a, vector<ll> &b)
+    vector<ll> convolution(vector<ll> &a, vector<ll> &b) // vector<ll> res = ntt.convolution(a1, a2);
     {
         ll n = (ll)a.size() + (ll)b.size() - 1;
         ll m = 1;

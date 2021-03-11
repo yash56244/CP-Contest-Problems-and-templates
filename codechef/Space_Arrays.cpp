@@ -17,6 +17,31 @@ using namespace std;
 #define SORTA(arr, sz) sort(ALLA(arr, sz))
 #define yes cout << "YES" << endl
 #define no cout << "NO" << endl
+#define log(args...)                             \
+    {                                            \
+        string _s = #args;                       \
+        replace(_s.begin(), _s.end(), ',', ' '); \
+        stringstream _ss(_s);                    \
+        istream_iterator<string> _it(_ss);       \
+        err(_it, args);                          \
+    }
+
+#define logarr(arr, a, b)            \
+    for (int z = (a); z <= (b); z++) \
+        cout << (arr[z]) << " ";     \
+    cout << endl;
+
+void err(istream_iterator<string> it)
+{
+}
+
+template <typename T, typename... Args>
+
+void err(istream_iterator<string> it, T a, Args... args)
+{
+    cout << *it << " = " << a << endl;
+    err(++it, args...);
+}
 
 typedef long long int ll;
 typedef pair<ll, ll> pll;
@@ -35,71 +60,38 @@ typedef map<ll, ll> mapll;
 const ll inf = 1e15;
 const ll mod = 1e9 + 7;
 
-const int block = 300;
-ll cnt[2000001];
-
-struct Query
-{
-    ll l, r, idx;
-};
-
-bool cmp(Query a, Query b)
-{
-    if (a.l / block != b.l / block)
-    {
-        return a.l / block < b.l / block;
-    }
-    return a.r < b.r;
-}
-
 void yash56244()
 {
-    ll n, q;
-    cin >> n >> q;
-    ll arr[n + 1];
-    FORL(i, 1, n)
+    ll n;
+    cin >> n;
+    ll arr[n];
+    FOR(i, n)
     {
         cin >> arr[i];
     }
-    Query queries[q + 1];
-    FORL(i, 1, q)
+    SORTA(arr, n);
+    ll diff = 0;
+    FOR(i, n)
     {
-        cin >> queries[i].l >> queries[i].r;
-        queries[i].idx = i;
+        if (arr[i] > i + 1)
+        {
+            cout << "Second" << endl;
+            return;
+        }
+        else
+        {
+            diff += (i + 1) - arr[i];
+        }
     }
-    sort(queries + 1, queries + q + 1, cmp);
-    ll l = 0, r = 0;
-    ll answers[q + 1];
-    ll ans = 0;
-    FORL(i, 1, q)
+    if (diff & 1)
     {
-        ll qL = queries[i].l, qR = queries[i].r;
-        while (l > qL - 1)
-        {
-            l--;
-            //add.
-        }
-        while (r < qR)
-        {
-            r++;
-            //add.
-        }
-        while (l < qL - 1)
-        {
-            //remove.
-            l++;
-        }
-        while (r > qR)
-        {
-            //remove.
-            r--;
-        }
-        answers[queries[i].idx] = ans;
+        cout << "First";
     }
-    FORL(i, 1, q)
+    else
     {
-        cout << answers[i] << endl;
+        cout << "Second";
     }
+    cout << endl;
 }
 
 int main()
@@ -110,7 +102,7 @@ int main()
     cout.tie(NULL);
 
     ll t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         yash56244();

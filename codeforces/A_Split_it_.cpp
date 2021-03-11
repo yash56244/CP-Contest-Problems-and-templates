@@ -2,7 +2,6 @@
 
 using namespace std;
 
-#define pi 3.1415926535897932384626433832795
 #define endl "\n"
 #define FOR(i, n) for (ll(i) = 0; (i) < (n); (i)++)
 #define FORL(i, a, n) for (ll(i) = (a); (i) <= (n); (i)++)
@@ -29,76 +28,37 @@ typedef priority_queue<ll> PQMAX;
 typedef priority_queue<ll, vector<ll>,
                        greater<ll>>
     PQMIN;
-typedef set<ll> setll;
 typedef map<ll, ll> mapll;
 
-const ll inf = 1e15;
+const ll inf = 1e18;
 const ll mod = 1e9 + 7;
-
-const int block = 300;
-ll cnt[2000001];
-
-struct Query
-{
-    ll l, r, idx;
-};
-
-bool cmp(Query a, Query b)
-{
-    if (a.l / block != b.l / block)
-    {
-        return a.l / block < b.l / block;
-    }
-    return a.r < b.r;
-}
+const ll maxn = 1e6 + 5;
 
 void yash56244()
 {
-    ll n, q;
-    cin >> n >> q;
-    ll arr[n + 1];
-    FORL(i, 1, n)
-    {
-        cin >> arr[i];
-    }
-    Query queries[q + 1];
-    FORL(i, 1, q)
-    {
-        cin >> queries[i].l >> queries[i].r;
-        queries[i].idx = i;
-    }
-    sort(queries + 1, queries + q + 1, cmp);
-    ll l = 0, r = 0;
-    ll answers[q + 1];
+    ll n, k;
+    cin >> n >> k;
+    string t;
+    cin >> t;
     ll ans = 0;
-    FORL(i, 1, q)
+    for (int i = 0; i < (n - 1) / 2; i++)
     {
-        ll qL = queries[i].l, qR = queries[i].r;
-        while (l > qL - 1)
+        if (t[i] == t[n - 1 - i])
         {
-            l--;
-            //add.
+            ans++;
         }
-        while (r < qR)
+        else
         {
-            r++;
-            //add.
+            break;
         }
-        while (l < qL - 1)
-        {
-            //remove.
-            l++;
-        }
-        while (r > qR)
-        {
-            //remove.
-            r--;
-        }
-        answers[queries[i].idx] = ans;
     }
-    FORL(i, 1, q)
+    if (ans >= k)
     {
-        cout << answers[i] << endl;
+        yes;
+    }
+    else
+    {
+        no;
     }
 }
 
@@ -110,7 +70,7 @@ int main()
     cout.tie(NULL);
 
     ll t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         yash56244();
