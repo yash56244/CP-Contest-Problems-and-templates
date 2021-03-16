@@ -37,47 +37,80 @@ const ll mod = 1e9 + 7;
 const ll maxn = 5e5 + 5;
 
 vl adj[maxn];
-vl fact(maxn);
 vl dpSize(maxn);
+vl dpAns(maxn);
+vl fact(maxn + 1);
+vl naturalNumInverse(maxn + 1);
+vl factorialNumInverse(maxn + 1);
+vector<pair<ll, pll>> res;
+ll n;
 
 void pre()
 {
-    fact[0] = 1;
-    fact[1] = 1;
-    FORL(i, 2, maxn - 1)
+    naturalNumInverse[0] = naturalNumInverse[1] = 1;
+
+    FORL(i, 2, maxn)
     {
-        fact[i] = (i * fact[i - 1]) % mod;
+        naturalNumInverse[i] = (naturalNumInverse[mod % i] * (mod - (mod / i))) % mod;
+    }
+    factorialNumInverse[0] = factorialNumInverse[1] = 1;
+
+    // precompute inverse of natural numbers
+    FORL(i, 2, maxn)
+    {
+        factorialNumInverse[i] = (naturalNumInverse[i] * factorialNumInverse[i - 1]) % mod;
+    }
+
+    fact[0] = 1;
+    // precompute factorials
+    FORL(i, 1, maxn)
+    {
+        fact[i] = (fact[i - 1] * i) % mod;
     }
 }
 
-ll dfs2(ll s, ll p) // size of subtree, k = 1
+ll NCR(ll n, ll r)
 {
-    ll ans = 0;
+    if (r > n)
+        return 0;
+    if (r == n)
+        return 1;
+    return ((fact[n] * factorialNumInverse[r]) % mod * factorialNumInverse[n - r]) % mod;
+}
+
+ll dfs1(ll s, ll p) // rerouting and tree size
+{
+    ll ans = 1, subTreeSize = 0;
     FOREACH(e, adj[s])
     {
         if (e != p)
         {
-            ans += dfs2(e, s);
+            ll csize = dfs1(e, s);
+            subTreeSize += csize;
+            ans = (ans * NCR(subTreeSize, csize)) % mod;
+            ans = (ans * dpAns[e]) % mod;
         }
     }
-    return dpSize[s] = 1 + ans;
+    dpAns[s] = ans;
+    return subTreeSize + 1;
 }
 
-ll dfs1(ll s, ll p) // k = 1
+ll dfs2(ll s, ll p) // calculating res
 {
-    ll ans = fact[dpSize[s] - 1];
-    FOREACH(v, adj[s])
+    ll subTreeSize = 0;
+    FOREACH(e, adj[s])
     {
-        if (v != p)
+        if (e != p)
         {
-            ans *= dfs1(v, s);
-            ans /= fact[dpSize[v]];
+            ll csize = dfs2(e, s);
+            subTreeSize += csize;
+            res.push_back({min(csize, n - csize), {e, s}});
         }
     }
-    return ans;
+    dpSize[s] = subTreeSize + 1;
+    return dpSize[s];
 }
-
-ll dfs4(ll s, ll p) // size of subtree.
+ll dfs4(ll s, ll p) // n <= 10
 {
     ll ans = 0;
     FOREACH(e, adj[s])
@@ -90,7 +123,7 @@ ll dfs4(ll s, ll p) // size of subtree.
     return 1 + ans;
 }
 
-ll dfs3(ll s, ll p)
+ll dfs3(ll s, ll p) // n <= 10
 {
     ll ans = fact[dfs4(s, p) - 1];
     FOREACH(v, adj[s])
@@ -113,8 +146,13 @@ bool cmp(pll a, pll b)
 
 void yash56244()
 {
-    ll n, k;
+    ll k;
     cin >> n >> k;
+    if (n == 1)
+    {
+        cout << 1 << " " << 1 << endl;
+        return;
+    }
     FOR(i, maxn)
     {
         adj[i].clear();
@@ -126,27 +164,7 @@ void yash56244()
         adj[a].push_back(b);
         adj[b].push_back(a);
     }
-    if (k == 1)
-    {
-        dpSize.clear();
-        ll maxsize = -inf;
-        FOREACH(v, adj)
-        {
-            maxsize = max(maxsize, (ll)v.size());
-        }
-        ll node = -1;
-        FORL(i, 1, n)
-        {
-            if (adj[i].size() == maxsize)
-            {
-                node = i;
-            }
-        }
-        ll sz = dfs2(node, -1);
-        ll f = dfs1(node, -1);
-        cout << node << " " << f << endl;
-    }
-    else if (k == 2 and n <= 10)
+    if (n <= 10)
     {
         vll c;
         FORL(i, 1, n)
@@ -156,10 +174,69 @@ void yash56244()
         }
         sort(c.begin(), c.end(), cmp);
         cout << c[k - 1].second << " " << c[k - 1].first << endl;
+        return;
+    }
+    dpSize.clear();
+    dpAns.clear();
+    res.clear();
+    dfs2(1, -1);
+    sort(res.begin(), res.end(), greater<pair<ll, pll>>());
+    // FOREACH(e, res)
+    // {
+    //     cout << res.size() << " ";
+    // }
+    ll k1, k2;
+    if (res[0].first != res[0].first)
+    {
+        vl t;
+        if ((res[0].second.first == res[1].second.first) || (res[0].second.first == res[1].second.second))
+        {
+            k1 = res[0].second.first;
+        }
+        else
+        {
+            k1 = res[0].second.second;
+        }
+        ll i = 1;
+        t.push_back((res[0].second.first != k1) ? res[0].second.first : res[0].second.second);
+        while (i != n && res[i - 1].first == res[i].first)
+        {
+            t.push_back((res[i].second.first != k1) ? res[i].second.first : res[i].second.second);
+            i++;
+        }
+        k2 = *max_element(t.begin(), t.end());
     }
     else
     {
-        cout << "Codeforces >> Codechef" << endl;
+        ll a = res[0].second.first, b = res[0].second.second;
+        if (dpSize[a] == n - dpSize[a])
+        {
+            k1 = max(a, b);
+            k2 = min(a, b);
+        }
+        else
+        {
+            if (dpSize[a] > n - dpSize[a])
+            {
+                k1 = a;
+                k2 = b;
+            }
+            else
+            {
+                k2 = a;
+                k1 = b;
+            }
+        }
+    }
+    if (k == 1)
+    {
+        dfs1(k1, -1);
+        cout << k1 << " " << ((dpAns[k1] % mod) + mod) % mod << endl;
+    }
+    else
+    {
+        dfs1(k2, -1);
+        cout << k2 << " " << ((dpAns[k2] % mod) + mod) % mod << endl;
     }
 }
 

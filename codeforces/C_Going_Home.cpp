@@ -2,7 +2,6 @@
 
 using namespace std;
 
-#define pi 3.1415926535897932384626433832795
 #define endl "\n"
 #define FOR(i, n) for (ll(i) = 0; (i) < (n); (i)++)
 #define FORL(i, a, n) for (ll(i) = (a); (i) <= (n); (i)++)
@@ -17,31 +16,6 @@ using namespace std;
 #define SORTA(arr, sz) sort(ALLA(arr, sz))
 #define yes cout << "YES" << endl
 #define no cout << "NO" << endl
-#define log(args...)                             \
-    {                                            \
-        string _s = #args;                       \
-        replace(_s.begin(), _s.end(), ',', ' '); \
-        stringstream _ss(_s);                    \
-        istream_iterator<string> _it(_ss);       \
-        err(_it, args);                          \
-    }
-
-#define logarr(arr, a, b)            \
-    for (int z = (a); z <= (b); z++) \
-        cout << (arr[z]) << " ";     \
-    cout << endl;
-
-void err(istream_iterator<string> it)
-{
-}
-
-template <typename T, typename... Args>
-
-void err(istream_iterator<string> it, T a, Args... args)
-{
-    cout << *it << " = " << a << endl;
-    err(++it, args...);
-}
 
 typedef long long int ll;
 typedef pair<ll, ll> pll;
@@ -54,16 +28,55 @@ typedef priority_queue<ll> PQMAX;
 typedef priority_queue<ll, vector<ll>,
                        greater<ll>>
     PQMIN;
-typedef set<ll> setll;
 typedef map<ll, ll> mapll;
 
-const ll inf = 1e15;
+const ll inf = 1e18;
 const ll mod = 1e9 + 7;
+const ll maxn = 1e6 + 5;
 
 void yash56244()
 {
-    ll n, m, x, y;
-    cin >> n >> m >> x >> y;
+    ll n;
+    cin >> n;
+    ll arr2[n];
+    FOR(i, n)
+    {
+        cin >> arr2[i];
+    }
+    unordered_map<int, pair<int, int>>
+        uomp;
+    bool found = false;
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = i + 1; j < n; ++j)
+        {
+            int sum = arr2[i] + arr2[j];
+            if (uomp.find(sum) == uomp.end())
+                uomp[sum] = make_pair(i, j);
+
+            else
+            {
+                pair<int, int> ppp = uomp[sum];
+                set<ll> s;
+                s.insert(ppp.first + 1);
+                s.insert(ppp.second + 1);
+                s.insert(i + 1);
+                s.insert(j + 1);
+                if (s.size() != 4)
+                    continue;
+                cout << "YES" << endl;
+                cout << ppp.second + 1 << " " << ppp.first + 1 << " " << i + 1 << " " << j + 1;
+                found = true;
+                break;
+            }
+        }
+        if (found)
+            break;
+    }
+    if (!found)
+    {
+        cout << "NO" << endl;
+    }
 }
 
 int main()
@@ -74,7 +87,7 @@ int main()
     cout.tie(NULL);
 
     ll t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
     {
         yash56244();

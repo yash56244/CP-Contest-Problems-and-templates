@@ -2,7 +2,6 @@
 
 using namespace std;
 
-#define pi 3.1415926535897932384626433832795
 #define endl "\n"
 #define FOR(i, n) for (ll(i) = 0; (i) < (n); (i)++)
 #define FORL(i, a, n) for (ll(i) = (a); (i) <= (n); (i)++)
@@ -17,31 +16,6 @@ using namespace std;
 #define SORTA(arr, sz) sort(ALLA(arr, sz))
 #define yes cout << "YES" << endl
 #define no cout << "NO" << endl
-#define log(args...)                             \
-    {                                            \
-        string _s = #args;                       \
-        replace(_s.begin(), _s.end(), ',', ' '); \
-        stringstream _ss(_s);                    \
-        istream_iterator<string> _it(_ss);       \
-        err(_it, args);                          \
-    }
-
-#define logarr(arr, a, b)            \
-    for (int z = (a); z <= (b); z++) \
-        cout << (arr[z]) << " ";     \
-    cout << endl;
-
-void err(istream_iterator<string> it)
-{
-}
-
-template <typename T, typename... Args>
-
-void err(istream_iterator<string> it, T a, Args... args)
-{
-    cout << *it << " = " << a << endl;
-    err(++it, args...);
-}
 
 typedef long long int ll;
 typedef pair<ll, ll> pll;
@@ -54,16 +28,40 @@ typedef priority_queue<ll> PQMAX;
 typedef priority_queue<ll, vector<ll>,
                        greater<ll>>
     PQMIN;
-typedef set<ll> setll;
 typedef map<ll, ll> mapll;
 
-const ll inf = 1e15;
+const ll inf = 1e18;
 const ll mod = 1e9 + 7;
+const ll maxn = 1e6 + 5;
 
 void yash56244()
 {
-    ll n, m, x, y;
-    cin >> n >> m >> x >> y;
+    ll n;
+    cin >> n;
+    ll a[n], b[n], tm[n];
+    FOR(i, n)
+    {
+        cin >> a[i] >> b[i];
+    }
+    FOR(i, n)
+    {
+        cin >> tm[i];
+    }
+    ll ans = a[0] + tm[0];
+    if (n == 1)
+    {
+        cout << ans << endl;
+        return;
+    }
+    ans = max(ans + (ll)ceil((double)(b[0] - a[0]) / (double)2), b[0]);
+    FORL(i, 1, n - 1)
+    {
+        ans += a[i] - b[i - 1] + tm[i];
+        if (i != n - 1)
+            ans = max(ans + (ll)ceil((double)(b[i] - a[i]) / (double)2), b[i]);
+        // cout << ans << " ";
+    }
+    cout << ans << endl;
 }
 
 int main()

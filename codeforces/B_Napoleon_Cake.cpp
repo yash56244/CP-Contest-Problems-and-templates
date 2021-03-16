@@ -12,6 +12,7 @@ using namespace std;
 #define ALLA(arr, sz) arr, arr + sz
 #define SIZE(v) (ll) v.size()
 #define SORT(v) sort(ALL(v))
+#define REVERSE(v) reverse(ALL(v))
 #define SORTA(arr, sz) sort(ALLA(arr, sz))
 #define yes cout << "YES" << endl
 #define no cout << "NO" << endl
@@ -25,60 +26,79 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef priority_queue<ll> PQMAX;
 typedef priority_queue<ll, vector<ll>,
-                       greater<ll>>
-    PQMIN;
-typedef set<ll> setll;
+					   greater<ll>>
+	PQMIN;
 typedef map<ll, ll> mapll;
 
-const ll inf = 1e15;
+const ll inf = 1e18;
 const ll mod = 1e9 + 7;
-
-struct DSU
+const ll maxn = 1e6 + 5;
+void solve()
 {
-    vl parent;
-
-    void init(ll n) { parent = vl(n + 1, -1); }
-
-    ll get(ll x) { return (parent[x] < 0 ? x : parent[x] = get(parent[x])); } // Path Compression.
-
-    bool sameSet(ll x, ll y) { return get(x) == get(y); }
-
-    ll size(ll x) { return -parent[get(x)]; }
-
-    bool unionSets(ll x, ll y)
-    {
-        x = get(x), y = get(y);
-
-        if (x == y)
-            return 0;
-
-        if (parent[x] > parent[y]) // Union by size.
-            swap(x, y);
-
-        parent[x] += parent[y];
-
-        parent[y] = x;
-
-        return 1;
-    }
-};
-
-void yash56244()
-{
+	int n;
+	cin >> n;
+	vector<int>
+		v1(n), v(n);
+	FOR(i, n)
+	{
+		cin >> v[i];
+	}
+	FOR(i, n)
+	{
+		v1[i] = false;
+	}
+	int x = v[n - 1];
+	bool flag = true;
+	for (int i = n - 1; i >= 0; i--)
+	{
+		int y = v[i];
+		if (x == y)
+		{
+			flag = false;
+		}
+		if (y > x)
+		{
+			x = y;
+		}
+		if (x > 0)
+		{
+			v1[i] = true;
+		}
+		x--;
+		if (flag)
+		{
+			if (y > x)
+			{
+				x = y;
+			}
+		}
+	}
+	for (auto i : v1)
+	{
+		if (i)
+		{
+			cout << 1 << " ";
+		}
+		else
+		{
+			cout << 0 << " ";
+		}
+	}
+	cout << endl;
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
+	ios_base::sync_with_stdio(false);
 
-    cin.tie(NULL);
-    cout.tie(NULL);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-    ll t = 1;
-    cin >> t;
-    while (t--)
-    {
-        yash56244();
-    }
-    return 0;
+	ll t = 1;
+	cin >> t;
+	while (t--)
+	{
+		solve();
+	}
+	return 0;
 }
