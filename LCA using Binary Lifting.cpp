@@ -32,7 +32,7 @@ const ll maxn = 1e6 + 5;
 struct LCA
 {
     ll n;
-    vvl parent;
+    vvl parent; // parent[i][v] = parent of vth node 2^i level up.
     vl depth;
 
     LCA(vvl &adj, ll root = 0)

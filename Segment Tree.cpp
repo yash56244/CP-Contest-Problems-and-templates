@@ -9,6 +9,27 @@ using namespace std;
 #define FORSQ(i, a, n) for (ll(i) = (a); (i) * (i) <= (n); ++(i))
 #define FOREACH(a, b) for (auto &(a) : (b))
 #define ALL(v) v.begin(), v.end()
+#define log(args...)                             \
+    {                                            \
+        string _s = #args;                       \
+        replace(_s.begin(), _s.end(), ',', ' '); \
+        stringstream _ss(_s);                    \
+        istream_iterator<string> _it(_ss);       \
+        err(_it, args);                          \
+    }
+#define logcontainer(container)   \
+    for (auto &(e) : (container)) \
+        cout << (e) << " ";       \
+    cout << endl;
+void err(istream_iterator<string> it)
+{
+}
+template <typename T, typename... Args>
+void err(istream_iterator<string> it, T a, Args... args)
+{
+    cout << *it << " = " << a << endl;
+    err(++it, args...);
+}
 
 typedef long long int ll;
 typedef pair<ll, ll> pll;
@@ -18,124 +39,64 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef map<ll, ll> mapll;
 
-using T = int; // T is the type of input array element
-using V = int; // V is the type of the required aggregate statistic
-
-struct SegmentTreeNode
+class SegmentTree // SegmentTree st().
 {
-    // variables to store aggregate statistics and
-    // any other information required to merge these
-    // aggregate statistics to form parent nodes
-
-    void assignLeaf(T value)
-    {
-        // Given the value of an input array element,
-        // build aggregate statistics for this leaf node
-    }
-
-    void merge(SegmentTreeNode &left, SegmentTreeNode &right)
-    {
-        // merge the aggregate statistics of left and right
-        // children to form the aggregate statistics of
-        // their parent node
-    }
-
-    V getValue()
-    {
-        // return the value of required aggregate statistic
-        // associated with this node
-    }
-};
-
-// T is the type of input array elements
-// V is the type of required aggregate statistic
-template <class T, class V>
-class SegmentTree
-{
-    SegmentTreeNode *nodes;
-    int N;
-
 public:
-    SegmentTree(T arr[], int N)
+    SegmentTree(ll count)
     {
-        this->N = N;
-        nodes = new SegmentTreeNode[getSegmentTreeSize(N)];
-        buildTree(arr, 1, 0, N - 1);
+        n = count;
+        segtree.assign(2 * n, 0);
     }
 
-    ~SegmentTree()
+    SegmentTree(vl &values) // Constructor for passing vector directly.
     {
-        delete[] nodes;
+        n = values.size();
+        segtree = vl(2 * n);
+        std::copy(values.begin(), values.end(), &segtree[0] + n);
+        FORR(idx, n - 1, 1)
+        {
+            segtree[idx] = comb(segtree[idx * 2], segtree[idx * 2 + 1]);
+        }
+    }
+    void print()
+    {
+        logcontainer(segtree);
+    }
+    ll comb(ll a, ll b) // Modify according to need.
+    {
+        return a + b;
+    }
+    void update(ll idx, ll val) // update value at idx to val.
+    {
+        idx += n;
+        segtree[idx] = val;
+        while (idx > 1)
+        {
+            idx /= 2;
+            segtree[idx] = comb(segtree[2 * idx], segtree[2 * idx + 1]);
+        }
     }
 
-    V getValue(int lo, int hi)
+    ll query(ll left, ll right) // [l, r)
     {
-        SegmentTreeNode result = getValue(1, 0, N - 1, lo, hi);
-        return result.getValue();
-    }
-
-    void update(int index, T value)
-    {
-        update(1, 0, N - 1, index, value);
+        ll ret = 0;
+        left += n;
+        right += n;
+        while (left < right)
+        {
+            if (left & 1)
+                ret = comb(ret, segtree[left++]);
+            if (right & 1)
+                ret = comb(ret, segtree[--right]);
+            left >>= 1;
+            right >>= 1;
+        }
+        return ret;
     }
 
 private:
-    void buildTree(T arr[], int stIndex, int lo, int hi)
-    {
-        if (lo == hi)
-        {
-            nodes[stIndex].assignLeaf(arr[lo]);
-            return;
-        }
-
-        int left = 2 * stIndex, right = left + 1, mid = (lo + hi) / 2;
-        buildTree(arr, left, lo, mid);
-        buildTree(arr, right, mid + 1, hi);
-        nodes[stIndex].merge(nodes[left], nodes[right]);
-    }
-
-    SegmentTreeNode getValue(int stIndex, int left, int right, int lo, int hi)
-    {
-        if (left == lo && right == hi)
-            return nodes[stIndex];
-
-        int mid = (left + right) / 2;
-        if (lo > mid)
-            return getValue(2 * stIndex + 1, mid + 1, right, lo, hi);
-        if (hi <= mid)
-            return getValue(2 * stIndex, left, mid, lo, hi);
-
-        SegmentTreeNode leftResult = getValue(2 * stIndex, left, mid, lo, mid);
-        SegmentTreeNode rightResult = getValue(2 * stIndex + 1, mid + 1, right, mid + 1, hi);
-        SegmentTreeNode result;
-        result.merge(leftResult, rightResult);
-        return result;
-    }
-
-    int getSegmentTreeSize(int N)
-    {
-        int size = 1;
-        for (; size < N; size <<= 1)
-            ;
-        return size << 1;
-    }
-
-    void update(int stIndex, int lo, int hi, int index, T value)
-    {
-        if (lo == hi)
-        {
-            nodes[stIndex].assignLeaf(value);
-            return;
-        }
-
-        int left = 2 * stIndex, right = left + 1, mid = (lo + hi) / 2;
-        if (index <= mid)
-            update(left, lo, mid, index, value);
-        else
-            update(right, mid + 1, hi, index, value);
-
-        nodes[stIndex].merge(nodes[left], nodes[right]);
-    }
+    ll n;
+    vl segtree;
 };
 
 void yash56244()
