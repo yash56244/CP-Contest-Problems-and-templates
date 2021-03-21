@@ -62,10 +62,6 @@ public:
     {
         logcontainer(segtree);
     }
-    ll comb(ll a, ll b) // Modify according to need.
-    {
-        return a + b;
-    }
     void update(ll idx, ll val) // update value at idx to val.
     {
         idx += n;
@@ -77,9 +73,10 @@ public:
         }
     }
 
-    ll query(ll left, ll right) // [l, r)
+    ll query(ll left, ll right) // [l, r]
     {
         ll ret = 0;
+        right++;
         left += n;
         right += n;
         while (left < right)
@@ -97,6 +94,11 @@ public:
 private:
     ll n;
     vl segtree;
+
+    ll comb(ll a, ll b) // Modify according to need.
+    {
+        return a + b;
+    }
 };
 
 void yash56244()
