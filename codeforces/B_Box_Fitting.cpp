@@ -52,23 +52,30 @@ const ll maxn = 1e6 + 5;
 
 void yash56244()
 {
-    ll n, m, k;
-    cin >> n >> m >> k;
-    ll diffarr[n + m + 5] = {};
-    FORL(i, 1, n)
+    ll n, w;
+    cin >> n >> w;
+    multiset<ll> ms;
+    FOR(i, n)
     {
-        int l = i + 1;
-        int r = i + m;
-        diffarr[l]++;
-        diffarr[r + 1]--;
+        ll wi;
+        cin >> wi;
+        ms.insert(wi);
     }
-    ll ans = 0;
-    FORL(i, 2, n + m)
+    ll ans = 1, left = w;
+    while (!ms.empty())
     {
-        diffarr[i] += diffarr[i - 1];
-        if (diffarr[i] & 1)
+        auto it = ms.upper_bound(left);
+        if (it != ms.begin())
         {
-            ans ^= (k + i);
+            it--;
+            ll val = *it;
+            left -= val;
+            ms.erase(it);
+        }
+        else
+        {
+            left = w;
+            ans++;
         }
     }
     cout << ans << endl;

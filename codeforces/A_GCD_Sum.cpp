@@ -49,29 +49,26 @@ typedef map<ll, ll> mapll;
 const ll inf = 1e18;
 const ll mod = 1e9 + 7;
 const ll maxn = 1e6 + 5;
+ll getSum(ll n)
+{
+    ll sum = 0;
+    while (n != 0)
+    {
+        sum = sum + n % 10;
+        n = n / 10;
+    }
+    return sum;
+}
 
 void yash56244()
 {
-    ll n, m, k;
-    cin >> n >> m >> k;
-    ll diffarr[n + m + 5] = {};
-    FORL(i, 1, n)
+    ll n;
+    cin >> n;
+    while (__gcd(n, getSum(n)) == 1)
     {
-        int l = i + 1;
-        int r = i + m;
-        diffarr[l]++;
-        diffarr[r + 1]--;
+        n++;
     }
-    ll ans = 0;
-    FORL(i, 2, n + m)
-    {
-        diffarr[i] += diffarr[i - 1];
-        if (diffarr[i] & 1)
-        {
-            ans ^= (k + i);
-        }
-    }
-    cout << ans << endl;
+    cout << n << endl;
 }
 
 int main()
