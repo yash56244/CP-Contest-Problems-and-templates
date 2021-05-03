@@ -50,11 +50,12 @@ const ll inf = 1e18;
 const ll mod = 1e9 + 7;
 const ll maxn = 2e5 + 5;
 
-struct SCC //Strongly Connected Components usign KosaRaju Algorithm.
+struct SCC // Strongly Connected Components usign KosaRaju Algorithm.
 {
     ll n;
     vl todo, comp, comps; //comps will store the beginning node of all sccs.
     vb vis;               //comp[i] will store the beginning of scc of which i is part of.
+    map<ll, vl> mp;
 
     SCC(vvl &adj, vvl &radj)
     {
@@ -99,14 +100,17 @@ struct SCC //Strongly Connected Components usign KosaRaju Algorithm.
                 dfs2(x, x, radj), comps.push_back(x);
             }
         }
-    }
-    void print() // printing scc and starting point in O(nlogn).
-    {            // printing can easily done in O(n) by starting dfs from each of comps and printing them.
-        map<ll, vl> mp;
         FOR(i, n)
         {
             mp[comp[i]].push_back(i);
         }
+    }
+    map<ll, vl> getSCC()
+    {
+        return mp;
+    }
+    void print() // printing scc and starting point in O(nlogn).
+    {            // printing can easily done in O(n) by starting dfs from each of comps and printing them.
         FOREACH(e, mp)
         {
             cout << e.first << " -> ";
