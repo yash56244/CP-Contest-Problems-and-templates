@@ -3,6 +3,8 @@
 using namespace std;
 
 #define endl "\n"
+#define aur &&
+#define ya ||
 #define yes cout << "YES" << endl
 #define no cout << "NO" << endl
 #define FOR(i, n) for (int(i) = 0; (i) < (n); (i)++)
@@ -46,14 +48,44 @@ typedef map<ll, ll> mapll;
 
 const ll inf = 1e18;
 const ll mod = 1e9 + 7;
-const ll maxn = 2e6 + 5;
+const ll maxn = 1e5;
 
 ll Mod(ll a, ll b)
 {
     return (b + a % b) % b;
 }
-
-void yash56244() {}
+// vvl factorisation(maxn + 1);
+// void sieve()
+// {
+//     for (int i = 1; i <= maxn; ++i)
+//     {
+//         for (int j = i; j <= maxn; j += i)
+//             factorisation[j].push_back(i);
+//     }
+// }
+void yash56244()
+{
+    ll n, m;
+    cin >> n >> m;
+    vl factorisation(n + 1, 1);
+    ll cnt = 0;
+    for (int i = 2; i <= n; i++)
+    {
+        ll a = m % i;
+        cnt += factorisation[a];
+        for (int j = a; j <= n; j += i)
+            factorisation[j]++;
+    }
+    // FORL(i, 2, n)
+    // {
+    //     int ans = lower_bound(factorisation[m - m % i].begin(), factorisation[m - m % i].end(), i) - factorisation[m - m % i].begin();
+    //     if (ans == 0)
+    //         cnt += i - 1;
+    //     else
+    //         cnt += ans;
+    // }
+    cout << cnt << endl;
+}
 
 int main()
 {
@@ -61,6 +93,7 @@ int main()
 
     cin.tie(NULL);
     cout.tie(NULL);
+    // sieve();
 
     int t = 1;
     cin >> t;

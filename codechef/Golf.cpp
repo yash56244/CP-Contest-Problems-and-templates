@@ -53,7 +53,19 @@ ll Mod(ll a, ll b)
     return (b + a % b) % b;
 }
 
-void yash56244() {}
+void yash56244()
+{
+    ll x, k, n;
+    cin >> n >> x >> k;
+    if (x % k == 0 || (n + 1 - x) % k == 0)
+    {
+        yes;
+    }
+    else
+    {
+        no;
+    }
+}
 
 int main()
 {

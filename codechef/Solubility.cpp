@@ -53,7 +53,12 @@ ll Mod(ll a, ll b)
     return (b + a % b) % b;
 }
 
-void yash56244() {}
+void yash56244()
+{
+    ll x, a, b;
+    cin >> x >> a >> b;
+    cout << (a + (100 - x) * b) * 10 << endl;
+}
 
 int main()
 {

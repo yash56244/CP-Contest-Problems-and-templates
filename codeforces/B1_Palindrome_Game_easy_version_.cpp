@@ -53,7 +53,59 @@ ll Mod(ll a, ll b)
     return (b + a % b) % b;
 }
 
-void yash56244() {}
+bool isPalindrome(string &s)
+{
+    bool flag = false;
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (s[i] != s[s.length() - i - 1])
+        {
+            flag = true;
+            break;
+        }
+    }
+    return !flag;
+}
+void yash56244()
+{
+    ll n;
+    cin >> n;
+    string s;
+    cin >> s;
+    // bool last = false;
+    int cnt1 = 0, cnt0 = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '0')
+        {
+            cnt0++;
+        }
+        else
+        {
+            cnt1++;
+        }
+    }
+    if (cnt1 == n)
+    {
+        cout << "DRAW";
+    }
+    else if (cnt0 == 1)
+    {
+        cout << "BOB";
+    }
+    else
+    {
+        if (cnt0 % 2 == 0)
+        {
+            cout << "BOB";
+        }
+        else
+        {
+            cout << "ALICE";
+        }
+    }
+    cout << endl;
+}
 
 int main()
 {

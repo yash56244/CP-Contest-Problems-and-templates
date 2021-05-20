@@ -3,6 +3,8 @@
 using namespace std;
 
 #define endl "\n"
+#define aur &&
+#define ya ||
 #define yes cout << "YES" << endl
 #define no cout << "NO" << endl
 #define FOR(i, n) for (int(i) = 0; (i) < (n); (i)++)
@@ -46,14 +48,71 @@ typedef map<ll, ll> mapll;
 
 const ll inf = 1e18;
 const ll mod = 1e9 + 7;
-const ll maxn = 2e6 + 5;
+const ll maxn = 3e5 + 5;
 
 ll Mod(ll a, ll b)
 {
     return (b + a % b) % b;
 }
 
-void yash56244() {}
+vvl adj(maxn);
+vl dp(maxn);
+vl dpSize(maxn);
+
+void dfs(ll s, ll p)
+{
+    FOREACH(v, adj[s])
+    {
+        if (v != p)
+        {
+            dfs(v, s);
+        }
+    }
+    vll lvl1;
+    FOREACH(v, adj[s])
+    {
+        if (v != p)
+        {
+            lvl1.push_back({dp[v], v});
+        }
+    }
+    sort(lvl1.begin(), lvl1.end(), greater<pll>());
+    int x = 1;
+    FOREACH(pr, lvl1)
+    {
+        dpSize[pr.second] = x++;
+    }
+    FOREACH(v, adj[s])
+    {
+        if (v != p)
+        {
+            dp[s] += dpSize[v] * dp[v];
+        }
+    }
+}
+
+void yash56244()
+{
+    ll n, x;
+    cin >> n >> x;
+    dp.clear();
+    dpSize.clear();
+    FOR(i, maxn)
+    {
+        dp[i] = 1;
+        dpSize[i] = 0;
+        adj[i].clear();
+    }
+    FORL(i, 1, n - 1)
+    {
+        ll u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    dfs(1, 0);
+    cout << dp[1] % mod * x % mod << endl;
+}
 
 int main()
 {

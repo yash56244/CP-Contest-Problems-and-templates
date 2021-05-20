@@ -3,6 +3,8 @@
 using namespace std;
 
 #define endl "\n"
+#define aur &&
+#define ya ||
 #define yes cout << "YES" << endl
 #define no cout << "NO" << endl
 #define FOR(i, n) for (int(i) = 0; (i) < (n); (i)++)
@@ -46,14 +48,33 @@ typedef map<ll, ll> mapll;
 
 const ll inf = 1e18;
 const ll mod = 1e9 + 7;
-const ll maxn = 2e6 + 5;
+const ll maxn = 1e6 + 5;
 
 ll Mod(ll a, ll b)
 {
     return (b + a % b) % b;
 }
 
-void yash56244() {}
+ll power(ll a, ll b, ll mod)
+{
+    a %= mod;
+    ll res = 1;
+    while (b > 0)
+    {
+        if (b & 1)
+            res = res * a % mod;
+        a = a * a % mod;
+        b >>= 1;
+    }
+    return res;
+}
+
+void yash56244()
+{
+    ll n;
+    cin >> n;
+    cout << power(2, n - 1, mod) << endl;
+}
 
 int main()
 {

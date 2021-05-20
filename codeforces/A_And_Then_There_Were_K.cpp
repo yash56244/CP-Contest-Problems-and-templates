@@ -53,7 +53,28 @@ ll Mod(ll a, ll b)
     return (b + a % b) % b;
 }
 
-void yash56244() {}
+ll power(ll a, ll b, ll mod)
+{
+    a %= mod;
+    ll res = 1;
+    while (b > 0)
+    {
+        if (b & 1)
+            res = res * a % mod;
+        a = a * a % mod;
+        b >>= 1;
+    }
+    return res;
+}
+
+void yash56244()
+{
+    ll n;
+    cin >> n;
+    int nn = log2(n);
+    cout
+        << power(2, nn, mod) - 1 << endl;
+}
 
 int main()
 {
