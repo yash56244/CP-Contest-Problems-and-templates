@@ -1,31 +1,50 @@
 class DSU
 {
 private:
-    vl parent;
+    vector<int> parent, size;
 
 public:
-    DSU(ll n) { parent = vl(n + 1, -1); }
-
-    ll get(ll x) { return (parent[x] < 0 ? x : parent[x] = get(parent[x])); } // Path Compression.
-
-    bool sameSet(ll x, ll y) { return get(x) == get(y); }
-
-    ll size(ll x) { return -parent[get(x)]; }
-
-    bool unite(ll x, ll y)
+    DSU(int n)
     {
-        x = get(x), y = get(y);
-
-        if (x == y)
-            return 0;
-
-        if (parent[x] > parent[y]) // Union by size.
-            swap(x, y);
-
-        parent[x] += parent[y];
-
-        parent[y] = x;
-
-        return 1;
+        parent.resize(n);
+        iota(parent.begin(), parent.end(), 0);
+        size.resize(n, 1);
+    }
+    int find(int a)
+    {
+        while (parent[a] != a)
+        {
+            parent[a] = parent[parent[a]]; // Path Compression.
+            a = parent[a];
+        }
+        return a;
+    }
+    bool same(int a, int b)
+    {
+        return find(a) == find(b);
+    }
+    void unite(int a, int b) // Union by size.
+    {
+        int rootA = find(a);
+        int rootB = find(b);
+        if (rootA == rootB)
+        {
+            return; // If A and B have same root, means they are connected.
+        }
+        if (size[rootA] < size[rootB])
+        {
+            parent[rootA] = rootB;
+            size[rootB] += size[rootA];
+        }
+        else
+        {
+            parent[rootB] = rootA;
+            size[rootA] += size[rootB];
+        }
+    }
+    int _size(int a) // Size of subset in which a is present.
+    {
+        int rootA = find(a);
+        return size[rootA];
     }
 };
